@@ -35,8 +35,8 @@ public class AutoStart {
     public static String auth_autoruuid;
     public static long millis = System.currentTimeMillis();
     public static String url_api2 = "https://api2.auto.ru/1.1/search?category_id=15&page_num=1&page_size=50&creation_date_to=" + millis;
-    String username = "yuioru@yandex.ru";
-    String password = "111111";
+    String username = "79854406626";
+    String password = "Test123";
 
     static CloseableHttpClient client = HttpClients.createDefault();
 
@@ -136,4 +136,40 @@ public class AutoStart {
         auth_autoruuid = r.body().jsonPath().get("autoruuid");
         System.out.println(r.body().asString());
     }
+
+    @Test //add
+    public void add(){
+        autorize();
+        RestAssured.baseURI = "https://api.auto.ru";
+        Response r = given().headers("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8").body("body_type=120&category_id=15&color=30&country_id=225&currency=RUR&custom=1&drive=1074&engine_type=1259&extras_fde0=1&folder_id=225&gearbox=1414&geo_id=213&is_for_editform=1&mark_id=15&model_id=223&modification_id=89716&owners_number=2&phones%5B0%5D%5Bcall_from%5D=0&phones%5B0%5D%5Bcall_till%5D=0&phones%5B0%5D%5Bphone_id%5D=66857950&phones%5B0%5D%5Bphone_num%5D=79217466037&phones_redirect=0&price=125988&pts=1&purchase_date=2017-01&run=6558&sale_id=0&section_id=1&state=1&username=test&wheel=1&year=1988&sid=20039391.e2104a4cfe4ff912_9b576319ccba0be6667fee2393f4ceb9&method=all.sale.add&client_tz=120&client_version=3.12.0&key=b7bf0dfc8cc562c1bf2cffdd9e78fc181f97f6c82f85fbca16d62d3d3258963c&client_os=7.1.1&uuid=bfe2ce67d21653f012114006a473647f&version=2.2.2&device_name=LGE%20Nexus%205X&client_platform=android&format=json").
+                when().post("/rest/");
+         Object status = r.body().jsonPath().get("result.success");
+         Object active = r.body().jsonPath().get("result.sale.active");
+         Object sale_id = r.body().jsonPath().get("result.sale.sale_id");
+         Object paymentstate = r.body().jsonPath().get("result.sale.need_pay");
+         System.out.println("success: " + status);
+         System.out.println("active: " + active);
+         System.out.println("sale_id: " + sale_id);
+         System.out.println("need_pay: " + paymentstate);
+
+         if (paymentstate.equals(true)){
+             assertTrue(active.equals(false));
+         }
+         else assertTrue(active.equals(true));
+         assertTrue(status.equals(true));
+         assertTrue(!sale_id.equals(null));
+
+
+         //Снимаем с продажи
+        Response r2 = given().headers("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8").body("category_id=15&section_id=1&sale_id=" + sale_id +"&reason_id=3&sid=20039391.e2104a4cfe4ff912_9b576319ccba0be6667fee2393f4ceb9&method=all.sale.archive&client_tz=120&client_version=3.12.0&key=b7bf0dfc8cc562c1bf2cffdd9e78fc181f97f6c82f85fbca16d62d3d3258963c&client_os=7.1.1&uuid=bfe2ce67d21653f012114006a473647f&version=2.2.2&device_name=LGE%20Nexus%205X&client_platform=android&format=json").
+                when().get("/rest/");
+        Object status2 = r.body().jsonPath().get("result.success");
+        System.out.println(status2);
+        assertTrue(status2.equals(true));
+
+
+    }
+
+
+
 }
