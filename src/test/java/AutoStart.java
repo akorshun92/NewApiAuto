@@ -160,13 +160,8 @@ public class AutoStart {
          assertTrue(!sale_id.equals(null));
 
 
-         //Снимаем с продажи
-        Response r2 = given().headers("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8").body("category_id=15&section_id=1&sale_id=" + sale_id +"&reason_id=3&sid=20039391.e2104a4cfe4ff912_9b576319ccba0be6667fee2393f4ceb9&method=all.sale.archive&client_tz=120&client_version=3.12.0&key=b7bf0dfc8cc562c1bf2cffdd9e78fc181f97f6c82f85fbca16d62d3d3258963c&client_os=7.1.1&uuid=bfe2ce67d21653f012114006a473647f&version=2.2.2&device_name=LGE%20Nexus%205X&client_platform=android&format=json").
-                when().get("/rest/");
-        Object status2 = r.body().jsonPath().get("result.success");
-        System.out.println(status2);
-        assertTrue(status2.equals(true));
-
+         //Deactivation
+        Response r2 = given().headers("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8").head("/rest/?category_id=15&section_id=1&sale_id=" + sale_id + "&reason_id=3&sid=20039391.e2104a4cfe4ff912_9b576319ccba0be6667fee2393f4ceb9&method=all.sale.archive&client_tz=120&client_version=3.12.0&key=b7bf0dfc8cc562c1bf2cffdd9e78fc181f97f6c82f85fbca16d62d3d3258963c&client_os=7.1.1&uuid=bfe2ce67d21653f012114006a473647f&version=2.2.2&device_name=LGE%20Nexus%205X&client_platform=android&format=json");
 
     }
 
